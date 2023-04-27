@@ -25,7 +25,7 @@ public class HelloController {
     @GetMapping("/mission3")
     public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
         String ip = getUserIp();
-        map.put(ip, map.getOrDefault(ip, 1) + 1);
+        map.put(ip, map.getOrDefault(ip, 0) + 1);
         return new Hello2DTO("Hello " + name, map.get(ip));
     }
 
