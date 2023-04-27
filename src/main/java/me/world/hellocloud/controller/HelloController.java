@@ -1,18 +1,21 @@
 package me.world.hellocloud.controller;
 
-import me.world.hellocloud.dto.Hello2DTO;
+import jakarta.servlet.http.HttpServletRequest;
 import me.world.hellocloud.dto.HelloDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class HelloController {
 
-    List<Hello2DTO> list = new ArrayList<>();
+    Map<String, Integer> map = new HashMap<>();
+//    List<Hello2DTO> list = new ArrayList<>();
 
     @GetMapping("/mission1")
     public HelloDTO mission1(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -20,8 +23,50 @@ public class HelloController {
     }
 
     @GetMapping("/mission3")
-    public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
-        list.add(new Hello2DTO("Hello " + name, list.size()));
-        return list.get(list.size() - 1);
+    public String mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
+        int count = 0;
+        String ip = "";
+        try {
+            ip = getUserIp();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        map.put(ip, map.getOrDefault(ip, 1) + 1);
+        return "Hello " + name + map.get(ip);
+    }
+
+    public String getUserIp() throws Exception {
+
+        String ip = null;
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-RealIP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("REMOTE_ADDR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 }
