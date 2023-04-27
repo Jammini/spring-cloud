@@ -1,10 +1,9 @@
 package me.world.hellocloud.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import me.world.hellocloud.dto.Hello2DTO;
 import me.world.hellocloud.dto.HelloDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +13,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class HelloController {
-    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     Map<String, Integer> map = new HashMap<>();
 
@@ -29,7 +28,7 @@ public class HelloController {
     public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
         String ip = getUserIp();
         map.put(ip, map.getOrDefault(ip, 0) + 1);
-        logger.debug("ip = " + ip + " count = " + map.get(ip));
+        log.debug("ip = " + ip + " count = " + map.get(ip));
         return new Hello2DTO("Hello " + name, map.get(ip));
     }
 
