@@ -1,6 +1,7 @@
 package me.world.hellocloud.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import me.world.hellocloud.dto.Hello2DTO;
 import me.world.hellocloud.dto.HelloDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,6 @@ import java.util.Map;
 public class HelloController {
 
     Map<String, Integer> map = new HashMap<>();
-//    List<Hello2DTO> list = new ArrayList<>();
 
     @GetMapping("/mission1")
     public HelloDTO mission1(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -23,24 +23,17 @@ public class HelloController {
     }
 
     @GetMapping("/mission3")
-    public String mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
-        String ip = "";
-        try {
-            ip = getUserIp();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
+        String ip = getUserIp();
         map.put(ip, map.getOrDefault(ip, 1) + 1);
-        return "Hello " + name + map.get(ip);
+        return new Hello2DTO("Hello " + name, map.get(ip));
     }
 
-    public String getUserIp() throws Exception {
-
-        String ip = null;
+    public String getUserIp() {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-        ip = request.getHeader("X-Forwarded-For");
+        String ip = request.getHeader("X-Forwarded-For");
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
