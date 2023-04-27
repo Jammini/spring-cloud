@@ -12,16 +12,16 @@ import java.util.List;
 @RestController
 public class HelloController {
 
-//    List<Hello2DTO> list = new ArrayList<>();
+    List<Hello2DTO> list = new ArrayList<>();
 
     @GetMapping("/mission1")
     public HelloDTO mission1(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new HelloDTO("Hello " + name);
     }
 
-    /*@GetMapping("/mission3")
+    @GetMapping("/mission3")
     public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
         list.add(new Hello2DTO("Hello " + name, list.size()));
         return list.get(list.size() - 1);
-    }*/
+    }
 }
