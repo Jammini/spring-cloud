@@ -24,7 +24,6 @@ public class HelloController {
 
     @GetMapping("/mission3")
     public String mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
-        int count = 0;
         String ip = "";
         try {
             ip = getUserIp();
