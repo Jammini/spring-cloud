@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class HelloController {
 
-    List<Hello2DTO> list = new ArrayList<>();
+//    List<Hello2DTO> list = new ArrayList<>();
 
     @GetMapping("/mission1")
     public HelloDTO mission1(@RequestParam(value = "name", defaultValue = "World") String name) {
