@@ -19,9 +19,9 @@ public class HelloController {
         return new HelloDTO("Hello " + name);
     }
 
-    @GetMapping("/mission3")
+    /*@GetMapping("/mission3")
     public Hello2DTO mission3(@RequestParam(value = "name", defaultValue = "World") String name) {
         list.add(new Hello2DTO("Hello " + name, list.size()));
         return list.get(list.size() - 1);
-    }
+    }*/
 }
